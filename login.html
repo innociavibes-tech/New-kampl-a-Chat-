@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Kampl'a Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <main class="auth-container">
+        <div class="logo">K</div>
+
+        <h1>Welcome Back</h1>
+        <p>Sign in to Kampl'a Chat</p>
+
+        <form id="loginForm">
+            <input
+                type="text"
+                id="username"
+                placeholder="Your username"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Your password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" id="loginBtn">
+                Login
+            </button>
+        </form>
+
+        <p id="message" role="status"></p>
+
+        <p class="auth-link">
+            New to Kampl'a Chat?
+            <a href="register.html">Create Account</a>
+        </p>
+    </main>
+
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>
