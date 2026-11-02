@@ -20,6 +20,8 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   try {
+    message.textContent = "Loading people...";
+
     const snapshot = await getDocs(collection(db, "users"));
 
     peopleList.innerHTML = "";
@@ -38,8 +40,9 @@ onAuthStateChanged(auth, async (user) => {
 
       const avatar = document.createElement("div");
       avatar.className = "avatar";
-      avatar.textContent = (person.fullName || person.username || "?")
-        .charAt(0).toUpperCase();
+      avatar.textContent =
+        (person.fullName || person.username || "?")
+          .charAt(0).toUpperCase();
 
       const details = document.createElement("div");
       details.className = "details";
@@ -57,6 +60,13 @@ onAuthStateChanged(auth, async (user) => {
         label.className = "you";
         label.textContent = "You";
         details.appendChild(label);
+      } else {
+        card.style.cursor = "pointer";
+
+        card.addEventListener("click", () => {
+          window.location.href =
+            "chat.html?uid=" + encodeURIComponent(person.uid);
+        });
       }
 
       card.append(avatar, details);
@@ -67,7 +77,7 @@ onAuthStateChanged(auth, async (user) => {
 
   } catch (error) {
     console.error(error);
-    message.textContent = "Could not load people. Please try again.";
+    message.textContent = "Could not load people.";
   }
 });
 
