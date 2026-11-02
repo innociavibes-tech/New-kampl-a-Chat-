@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People | Kampl'a Chat</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #071426;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 22px;
+      background: #102b50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 { font-size: 21px; margin: 0; }
+    #logout {
+      background: #24466f;
+      color: white;
+      border: 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+    main { padding: 20px; }
+    .person {
+      background: #10233d;
+      border: 1px solid #24466f;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #1769aa;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .details { flex: 1; }
+    .details h3 { margin: 0 0 5px; }
+    .details p { margin: 0; color: #a9bfd9; font-size: 13px; }
+    .you { color: #63c5ff; font-size: 12px; }
+    #message { color: #a9bfd9; }
+  </style>
+</head>
+<body>
 
+<header>
+  <h1>Kampl'a Chat</h1>
+  <button id="logout">Logout</button>
+</header>
+
+<main>
+  <h2>People</h2>
+  <p>Find people on Kampl'a Chat.</p>
+  <p id="message">Loading people...</p>
+  <div id="peopleList"></div>
+</main>
+
+<script type="module" src="js/people.js"></script>
+</body>
+</html>
