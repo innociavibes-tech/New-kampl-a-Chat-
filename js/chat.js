@@ -1,19 +1,19 @@
 import { auth, db } from "./firebase.js";
 
 import {
-  onAuthStateChanged
+onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 import {
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  addDoc,
-  serverTimestamp
+doc,
+getDoc,
+setDoc,
+collection,
+query,
+orderBy,
+onSnapshot,
+addDoc,
+serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const messagesBox = document.getElementById("messages");
@@ -22,208 +22,209 @@ const form = document.getElementById("composer");
 const sendButton = document.getElementById("sendButton");
 const statusText = document.getElementById("status");
 
-const params = new URLSearchParams(location.search);
+const personName = document.getElementById("personName");
+const personUsername = document.getElementById("personUsername");
+
+const params = new URLSearchParams(window.location.search);
 const otherUid = params.get("uid");
 
 let currentUser = null;
 let conversationId = null;
-let sending = false;
 let unsubscribeMessages = null;
+let sending = false;
 
-function showStatus(text) {
-  statusText.textContent = text;
+function setStatus(text) {
+statusText.textContent = text;
 }
 
 function showError(error) {
-  console.error(error);
-  showStatus("Error: " + error.message);
+console.error("Kampl'a Chat error:", error);
+setStatus("Error: " + (error.message || "Something went wrong."));
 }
 
-document.getElementById("back").onclick = () => {
-  location.href = "people.html";
-};
+function displayMessage(data) {
+const bubble = document.createElement("div");
 
-function showMessage(data) {
-  const bubble = document.createElement("div");
+bubble.className =
+"bubble " +
+(data.senderId === currentUser.uid ? "sent" : "received");
 
-  bubble.className =
-    "bubble " +
-    (data.senderId === currentUser.uid ? "sent" : "received");
+const text = document.createElement("div");
+text.textContent = data.text || "";
 
-  const text = document.createElement("div");
-  text.textContent = data.text;
+const time = document.createElement("span");
+time.className = "time";
 
-  const time = document.createElement("span");
-  time.className = "time";
+if (data.createdAt && data.createdAt.toDate) {
+time.textContent = data.createdAt.toDate().toLocaleTimeString([], {
+hour: "2-digit",
+minute: "2-digit"
+});
+} else {
+time.textContent = "Sending...";
+}
 
-  if (data.createdAt?.toDate) {
-    time.textContent =
-      data.createdAt.toDate().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+bubble.append(text, time);
+messagesBox.appendChild(bubble);
+}
+
+async function initializeChat() {
+if (!otherUid) {
+throw new Error("No account was selected.");
+}
+
+if (otherUid === currentUser.uid) {
+throw new Error("You cannot chat with your own account.");
+}
+
+setStatus("Loading profile...");
+
+const profileRef = doc(db, "users", otherUid);
+const profileSnapshot = await getDoc(profileRef);
+
+if (!profileSnapshot.exists()) {
+throw new Error("The selected account does not exist.");
+}
+
+const profile = profileSnapshot.data();
+
+personName.textContent =
+profile.fullName || "Kampl'a Chat User";
+
+personUsername.textContent =
+"@" + (profile.username || "user");
+
+const participants = [currentUser.uid, otherUid].sort();
+
+conversationId = participants.join("_");
+
+const conversationRef = doc(
+db,
+"conversations",
+conversationId
+);
+
+setStatus("Opening conversation...");
+
+const conversationSnapshot = await getDoc(conversationRef);
+
+if (!conversationSnapshot.exists()) {
+await setDoc(conversationRef, {
+participants: participants,
+createdAt: serverTimestamp(),
+updatedAt: serverTimestamp()
+});
+} else {
+const savedParticipants =
+conversationSnapshot.data().participants || [];
+
+if (
+  savedParticipants.length !== 2 ||
+  !participants.every(id => savedParticipants.includes(id))
+) {
+  throw new Error("Conversation verification failed.");
+}
+
+}
+
+const messagesRef = collection(
+db,
+"conversations",
+conversationId,
+"messages"
+);
+
+const messagesQuery = query(
+messagesRef,
+orderBy("createdAt", "asc")
+);
+
+unsubscribeMessages = onSnapshot(
+messagesQuery,
+
+snapshot => {
+  messagesBox.innerHTML = "";
+
+  if (snapshot.empty) {
+    const empty = document.createElement("p");
+    empty.id = "empty";
+    empty.textContent = "No messages yet. Say hello!";
+    messagesBox.appendChild(empty);
   } else {
-    time.textContent = "Sending...";
-  }
-
-  bubble.append(text, time);
-  messagesBox.appendChild(bubble);
-}
-
-async function startChat() {
-  if (!otherUid) {
-    throw new Error("No account was selected.");
-  }
-
-  if (otherUid === currentUser.uid) {
-    throw new Error("You cannot chat with yourself.");
-  }
-
-  showStatus("Loading profile...");
-
-  const userRef = doc(db, "users", otherUid);
-  const userSnapshot = await getDoc(userRef);
-
-  if (!userSnapshot.exists()) {
-    throw new Error("This user's profile was not found.");
-  }
-
-  const otherUser = userSnapshot.data();
-
-  document.getElementById("personName").textContent =
-    otherUser.fullName || "Kampl'a Chat User";
-
-  document.getElementById("personUsername").textContent =
-    "@" + (otherUser.username || "user");
-
-  const participants = [currentUser.uid, otherUid].sort();
-
-  conversationId = participants.join("_");
-
-  const conversationRef = doc(
-    db,
-    "conversations",
-    conversationId
-  );
-
-  showStatus("Opening conversation...");
-
-  const conversationSnapshot = await getDoc(conversationRef);
-
-  if (!conversationSnapshot.exists()) {
-    await setDoc(conversationRef, {
-      participants: participants,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+    snapshot.forEach(messageDoc => {
+      displayMessage(messageDoc.data());
     });
-  } else {
-    const saved = conversationSnapshot.data().participants || [];
-
-    if (
-      saved.length !== 2 ||
-      !participants.every(id => saved.includes(id))
-    ) {
-      throw new Error("Conversation participants do not match.");
-    }
   }
 
-  const messagesRef = collection(
-    db,
-    "conversations",
-    conversationId,
-    "messages"
-  );
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+  setStatus("Connected");
+},
 
-  const messagesQuery = query(
-    messagesRef,
-    orderBy("createdAt", "asc")
-  );
+error => {
+  showError(error);
+}
 
-  if (unsubscribeMessages) {
-    unsubscribeMessages();
-  }
-
-  unsubscribeMessages = onSnapshot(
-    messagesQuery,
-
-    snapshot => {
-      messagesBox.innerHTML = "";
-
-      if (snapshot.empty) {
-        const empty = document.createElement("p");
-        empty.id = "empty";
-        empty.textContent = "No messages yet. Say hello!";
-        messagesBox.appendChild(empty);
-      } else {
-        snapshot.forEach(messageDoc => {
-          showMessage(messageDoc.data());
-        });
-      }
-
-      messagesBox.scrollTop = messagesBox.scrollHeight;
-      showStatus("Connected");
-    },
-
-    error => {
-      showError(error);
-    }
-  );
+);
 }
 
 form.addEventListener("submit", async event => {
-  event.preventDefault();
+event.preventDefault();
 
-  const messageText = input.value.trim();
+const messageText = input.value.trim();
 
-  if (!messageText || !conversationId || sending) {
-    return;
-  }
+if (!messageText || !conversationId || sending) {
+return;
+}
 
-  sending = true;
-  sendButton.disabled = true;
+sending = true;
+sendButton.disabled = true;
 
-  try {
-    const messagesRef = collection(
-      db,
-      "conversations",
-      conversationId,
-      "messages"
-    );
+try {
+const messagesRef = collection(
+db,
+"conversations",
+conversationId,
+"messages"
+);
 
-    await addDoc(messagesRef, {
-      senderId: currentUser.uid,
-      text: messageText,
-      createdAt: serverTimestamp()
-    });
+await addDoc(messagesRef, {
+  senderId: currentUser.uid,
+  text: messageText,
+  createdAt: serverTimestamp()
+});
 
-    input.value = "";
-    input.focus();
+input.value = "";
+input.focus();
 
-  } catch (error) {
-    showError(error);
-  } finally {
-    sending = false;
-    sendButton.disabled = false;
-  }
+} catch (error) {
+showError(error);
+} finally {
+sending = false;
+sendButton.disabled = false;
+}
+});
+
+document.getElementById("back").addEventListener("click", () => {
+window.location.href = "people.html";
 });
 
 onAuthStateChanged(auth, async user => {
-  if (!user) {
-    location.href = "login.html";
-    return;
-  }
+if (!user) {
+window.location.href = "login.html";
+return;
+}
 
-  currentUser = user;
+currentUser = user;
 
-  try {
-    await startChat();
-  } catch (error) {
-    showError(error);
-  }
+try {
+await initializeChat();
+} catch (error) {
+showError(error);
+}
 });
 
 window.addEventListener("beforeunload", () => {
-  if (unsubscribeMessages) {
-    unsubscribeMessages();
-  }
+if (unsubscribeMessages) {
+unsubscribeMessages();
+}
 });
