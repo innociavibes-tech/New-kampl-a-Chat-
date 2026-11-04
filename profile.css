@@ -1,1 +1,97 @@
+.profile-page {
+min-height: 100vh;
+padding: 25px 20px;
+background: #07152e;
+color: white;
+text-align: center;
+}
 
+.profile-page h2 {
+font-size: 25px;
+margin-bottom: 25px;
+}
+
+.profile-photo {
+width: 125px;
+height: 125px;
+margin: 20px auto;
+border-radius: 50%;
+overflow: hidden;
+background: #14294b;
+border: 3px solid #2196f3;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.profile-photo img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.empty-profile {
+color: #a9bdd8;
+font-size: 14px;
+}
+
+.upload-button {
+display: inline-block;
+background: #1685e8;
+color: white;
+padding: 12px 22px;
+border-radius: 25px;
+cursor: pointer;
+margin-bottom: 25px;
+}
+
+.profile-form {
+max-width: 450px;
+margin: auto;
+text-align: left;
+}
+
+.profile-form label {
+display: block;
+margin: 15px 0 8px;
+font-weight: 600;
+}
+
+.profile-form input,
+.profile-form textarea {
+width: 100%;
+padding: 14px;
+border: 1px solid #294365;
+border-radius: 10px;
+background: #102442;
+color: white;
+font-size: 15px;
+box-sizing: border-box;
+}
+
+.profile-form textarea {
+resize: vertical;
+}
+
+.profile-form button {
+width: 100%;
+padding: 15px;
+margin-top: 22px;
+background: #1685e8;
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.profile-form button:disabled {
+opacity: 0.6;
+}
+
+.profile-form p {
+text-align: center;
+color: #75c5ff;
+margin-top: 15px;
+}
