@@ -1,1 +1,113 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chats | Kampl'a Chat</title>  <style>
+    * { box-sizing: border-box; }
 
+    body {
+      margin: 0;
+      padding-bottom: 85px;
+      background: #071426;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #102b50;
+      padding: 22px;
+    }
+
+    h1 { margin: 0; font-size: 22px; }
+
+    main { padding: 20px; }
+
+    .conversation {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: #10233d;
+      border: 1px solid #24466f;
+      border-radius: 13px;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #1769aa;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .details { flex: 1; min-width: 0; }
+
+    .details h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .details p {
+      margin: 0;
+      color: #a9bfd9;
+      font-size: 13px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #message {
+      color: #a9bfd9;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #10233d;
+      border-top: 1px solid #24466f;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      color: #9bb0c9;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .nav-item span:first-child { font-size: 22px; }
+    .nav-item.active { color: #50b8ff; }
+  </style></head><body><header>
+  <h1>My Chats</h1>
+</header><main>
+  <p id="message">Loading conversations...</p>
+  <div id="chatsList"></div>
+</main><nav class="bottom-nav">
+  <a href="people.html" class="nav-item">
+    <span>🏠</span>
+    <span>Home</span>
+  </a>  <a href="chats.html" class="nav-item active">
+    <span>💬</span>
+    <span>Chats</span>
+  </a>  <a href="profile.html" class="nav-item">
+    <span>👤</span>
+    <span>Profile</span>
+  </a>
+</nav><script type="module" src="js/chats.js"></script></body>
+  </html>
