@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>People | Kampl'a Chat</title>
-  <style>
-    * { box-sizing: border-box; }
+  <title>People | Kampl'a Chat</title>  <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #071426;
       color: white;
       font-family: Arial, sans-serif;
+      padding-bottom: 85px;
     }
+
     header {
       padding: 22px;
       background: #102b50;
@@ -19,7 +22,12 @@
       justify-content: space-between;
       align-items: center;
     }
-    h1 { font-size: 21px; margin: 0; }
+
+    h1 {
+      font-size: 21px;
+      margin: 0;
+    }
+
     #logout {
       background: #24466f;
       color: white;
@@ -27,7 +35,11 @@
       padding: 10px 15px;
       border-radius: 8px;
     }
-    main { padding: 20px; }
+
+    main {
+      padding: 20px;
+    }
+
     .person {
       background: #10233d;
       border: 1px solid #24466f;
@@ -38,6 +50,7 @@
       align-items: center;
       gap: 13px;
     }
+
     .avatar {
       width: 45px;
       height: 45px;
@@ -48,27 +61,79 @@
       font-size: 20px;
       font-weight: bold;
     }
-    .details { flex: 1; }
-    .details h3 { margin: 0 0 5px; }
-    .details p { margin: 0; color: #a9bfd9; font-size: 13px; }
-    .you { color: #63c5ff; font-size: 12px; }
-    #message { color: #a9bfd9; }
-  </style>
-</head>
-<body>
 
-<header>
+    .details {
+      flex: 1;
+    }
+
+    .details h3 {
+      margin: 0 0 5px;
+    }
+
+    .details p {
+      margin: 0;
+      color: #a9bfd9;
+      font-size: 13px;
+    }
+
+    .you {
+      color: #63c5ff;
+      font-size: 12px;
+    }
+
+    #message {
+      color: #a9bfd9;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #10233d;
+      border-top: 1px solid #24466f;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: #9bb0c9;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      flex: 1;
+    }
+
+    .nav-item span:first-child {
+      font-size: 22px;
+    }
+
+    .nav-item.active {
+      color: #50b8ff;
+    }
+  </style></head><body><header>
   <h1>Kampl'a Chat</h1>
   <button id="logout">Logout</button>
-</header>
-
-<main>
+</header><main>
   <h2>People</h2>
-  <p>Find people on Kampl'a Chat.</p>
-  <p id="message">Loading people...</p>
+  <p>Find people on Kampl'a Chat.</p>  <p id="message">Loading people...</p>
   <div id="peopleList"></div>
-</main>
-
-<script type="module" src="js/people.js"></script>
-</body>
+</main><nav class="bottom-nav">
+  <a href="people.html" class="nav-item active">
+    <span>🏠</span>
+    <span>Home</span>
+  </a>  <a href="chats.html" class="nav-item">
+    <span>💬</span>
+    <span>Chats</span>
+  </a>  <a href="profile.html" class="nav-item">
+    <span>👤</span>
+    <span>Profile</span>
+  </a>
+</nav><script type="module" src="js/people.js"></script></body>
 </html>
