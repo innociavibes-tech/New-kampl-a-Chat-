@@ -1,1 +1,203 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Profile | Kampl'a Chat</title><style>
+* {
+  box-sizing: border-box;
+}
 
+body {
+  margin: 0;
+  padding-bottom: 90px;
+  background: #071426;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: #102b50;
+  padding: 22px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+main {
+  padding: 20px;
+}
+
+.profile-card {
+  background: #10233d;
+  border: 1px solid #24466f;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.photo-container {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+#profilePicture {
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1769aa;
+  background: #071426;
+}
+
+.upload-label {
+  display: block;
+  margin-top: 14px;
+  color: #50b8ff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#photoInput {
+  display: none;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#username {
+  text-align: center;
+  color: #50b8ff;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin: 17px 0 8px;
+  color: #a9bfd9;
+  font-size: 14px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 14px;
+  background: #071426;
+  color: white;
+  border: 1px solid #315477;
+  border-radius: 9px;
+  outline: none;
+  font-family: Arial, sans-serif;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 9px;
+  margin-top: 17px;
+  color: white;
+  background: #1769aa;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+#logout {
+  background: #b73535;
+}
+
+#status {
+  text-align: center;
+  color: #a9bfd9;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: #10233d;
+  border-top: 1px solid #24466f;
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: #9bb0c9;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.nav-item span:first-child {
+  font-size: 22px;
+}
+
+.nav-item.active {
+  color: #50b8ff;
+}
+</style></head><body><header>
+  <h1>My Profile</h1>
+</header><main><div class="profile-card">  <div class="photo-container">
+    <img
+      id="profilePicture"
+      src="https://placehold.co/200x200/102b50/ffffff?text=Photo"
+      alt="Profile picture"
+    ><label class="upload-label" for="photoInput">
+  Change Profile Picture
+</label>
+
+<input
+  type="file"
+  id="photoInput"
+  accept="image/jpeg,image/png,image/webp"
+>
+
+  </div>  <h2 id="fullName">Loading...</h2>
+  <p id="username"></p><label for="nameInput">Full Name</label>
+<input
+type="text"
+id="nameInput"
+maxlength="60"
+placeholder="Enter your name"
+
+«»
+
+<label for="aboutInput">About Me</label>
+
+  <textarea
+    id="aboutInput"
+    maxlength="160"
+    placeholder="Write something about yourself..."
+  ></textarea><button id="saveButton">Save Profile</button>
+
+<button id="logout">Log Out</button>
+
+  <p id="status"></p></div></main><nav class="bottom-nav">  <a href="people.html" class="nav-item">
+    <span>🏠</span>
+    <span>Home</span>
+  </a>  <a href="chats.html" class="nav-item">
+    <span>💬</span>
+    <span>Chats</span>
+  </a>  <a href="profile.html" class="nav-item active">
+    <span>👤</span>
+    <span>Profile</span>
+  </a></nav><script type="module" src="js/profile.js"></script></body>
+                 </html>
